@@ -1,4 +1,6 @@
 {
-  "last_sent": null,
-  "versions": {}
+  "last_sent": "2026-06-26T15:16:19.951Z",
+  "versions": {
+    "@anthropic-ai/claude-code": "2.1.193"
+  }
 }
