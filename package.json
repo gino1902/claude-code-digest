@@ -1,0 +1,13 @@
+{
+  "name": "claude-code-digest",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Fortnightly email digest of new Claude Code major features",
+  "scripts": {
+    "dry-run": "DRY_RUN=true FORCE=true node digest.mjs"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

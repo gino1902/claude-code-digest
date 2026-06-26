@@ -1,0 +1,51 @@
+name: Claude Code digest
+
+on:
+  schedule:
+    # Daily check at 07:00 UTC (09:00 Paris in summer, 08:00 in winter).
+    # Cadence (how often it actually sends) is set in config.yml, not here.
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Send even if the cadence is not yet due'
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Build the digest but do not send or update state'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # needed to commit the updated state.json
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm install
+
+      - name: Run digest
+        run: node digest.mjs
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          FORCE: ${{ inputs.force }}
+          DRY_RUN: ${{ inputs.dry_run }}
+
+      - name: Commit updated state
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          git diff --staged --quiet || git commit -m "chore: update digest state"
+          git push

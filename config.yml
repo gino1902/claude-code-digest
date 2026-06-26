@@ -1,0 +1,32 @@
+# Claude Code digest — behaviour only. No secrets, no GitHub identity here.
+# Secrets (API keys, email addresses) live in GitHub Actions secrets.
+
+# --- What to track ---
+# Add more entries to track other products. Each needs a changelog URL and an
+# npm package name (used only for release dates).
+sources:
+  - name: Claude Code
+    changelog: https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md
+    npm_package: "@anthropic-ai/claude-code"
+
+# --- Cadence ---
+# The workflow checks daily, but only sends when this many days have passed
+# since the last send. 7 = weekly, 14 = fortnightly, 30 = monthly.
+cadence_days: 14
+
+# --- Filtering ---
+# major      = only major new functionalities (no bug fixes)
+# all        = all new features, no pure bug fixes
+# everything = include bug fixes and reliability changes
+filter: major
+group_by_theme: true
+max_items: 0          # 0 = no limit
+
+# --- Output ---
+language: en-GB
+subject: "Claude Code — new major features ({date})"
+format: html          # html | markdown
+empty_digest: note    # note = send a short "nothing major" line; skip = send nothing
+
+# --- Model ---
+model: claude-opus-4-8
