@@ -1,6 +1,6 @@
 {
-  "last_sent": "2026-07-11T08:48:07.457Z",
+  "last_sent": "2026-07-25T09:02:08.342Z",
   "versions": {
-    "@anthropic-ai/claude-code": "2.1.207"
+    "@anthropic-ai/claude-code": "2.1.220"
   }
 }
